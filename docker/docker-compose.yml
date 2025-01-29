@@ -28,7 +28,10 @@ services:
       dockerfile: docker/Dockerfile 
       args:
         db_host: persons-msdb # In docker the container name is also the host name
-        db_password: Qaz@wsx!
+        db_port: 1433
+        db_name: "personsDB"
+        db_username: "sa"
+        db_password: Qaz@wsx! #Qaz!wsx2
     ports: 
       - '80:80' 
     environment:

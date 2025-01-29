@@ -36,5 +36,5 @@ RUN npm install
 # NPM is done, now copy in the code for the project to the workdir
 COPY ${basedir}/src ./src
 
-EXPOSE 3000
+EXPOSE 80
 ENTRYPOINT [ "npm", "start" ]
