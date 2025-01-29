@@ -1,0 +1,39 @@
+services:
+# Order of things sometimes matters for Docker Compose
+  persons-msdb:
+    image: dockerpersons/persons-msdb # it has to be the image name
+    build: 
+      context: ../persons-msdb
+      dockerfile: docker/Dockerfile
+      args: 
+        buildno: 1
+        sa_password: Qaz@wsx!
+    ports: #export
+      - '1434:1433'
+    networks:
+      - persons-net
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' -No"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  persons-api:
+    image: dockerpersons/persons-api 
+    build: 
+      context: ../persons-api 
+      dockerfile: docker/Dockerfile 
+      args:
+        db_host: persons-msdb # In docker the container name is also the host name
+        db_password: Qaz@wsx!
+    ports: 
+      - '3000:3000' 
+    depends_on:
+      persons-msdb:
+        condition: service_healthy
+    networks: 
+      - persons-net
+
+networks:
+  persons-net:
