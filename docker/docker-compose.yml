@@ -31,6 +31,12 @@ services:
         db_password: Qaz@wsx!
     ports: 
       - '3000:3000' 
+    environments:
+      - DB_HOST=localhost
+      - DB_PORT=1433
+      - DB_USERNAME=iotuser
+      - DB_PASSWORD=iotuser
+      - DB_NAME=PersonsDB
     depends_on:
       persons-msdb:
         condition: service_healthy
