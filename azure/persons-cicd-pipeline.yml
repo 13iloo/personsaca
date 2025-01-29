@@ -18,15 +18,17 @@ stages:
           displayName: Persons build and push job
           steps:
             - task: DockerCompose@1
+              displayName: Persons build task
               inputs:
                 containerregistrytype: 'Azure Container Registry'
                 azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
                 azureContainerRegistry: '{"loginServer":"bhcontainerregistry.azurecr.io", "id" : "/subscriptions/6b707fea-0a44-4ee3-8c61-f2c29d7a2d25/resourceGroups/BHbigdata/providers/Microsoft.ContainerRegistry/registries/BHcontainerregistry"}'
                 dockerComposeFile: 'docker/docker-compose.yml'
-                action: 'Run a Docker Compose command'
-              displayName: Persons build task
+                action: 'Build services'
+                includeLatestTag: true
               
             - task: DockerCompose@1
+              displayName: Persons push task
               inputs:
                 containerregistrytype: 'Azure Container Registry'
                 azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
@@ -34,7 +36,6 @@ stages:
                 dockerComposeFile: 'docker/docker-compose.yml'
                 action: 'Push services'
                 includeLatestTag: true
-              displayName: Persons push task
              
                 
     - stage: PersonsCD
