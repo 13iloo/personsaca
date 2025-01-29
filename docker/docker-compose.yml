@@ -15,7 +15,7 @@ services:
       replicas: 1
     networks:
       - persons-net
-      
+
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' -No"]
       interval: 30s
@@ -41,7 +41,7 @@ services:
     ports: 
       - '80:80' 
     environment:
-      PORT= 80
+      - PORT= 80
     deploy:
       replicas: 1
 
