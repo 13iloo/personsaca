@@ -11,20 +11,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-    - stage: SaluteCI
-      displayName: Salute CI Stage
+    - stage: PersonsCI
+      displayName: Persons CI Stage
       jobs:
         - job:
-          displayName: Salute build and push job
+          displayName: Persons build and push job
           steps:
             - task: DockerCompose@1
-              inputs:
-                containerregistrytype: 'Azure Container Registry'
-                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
-                azureContainerRegistry: '{"loginServer":"bhcontainerregistry.azurecr.io", "id" : "/subscriptions/6b707fea-0a44-4ee3-8c61-f2c29d7a2d25/resourceGroups/BHbigdata/providers/Microsoft.ContainerRegistry/registries/BHcontainerregistry"}'
-                dockerComposeFile: 'docker/docker-compose.yml'
-                action: 'Build services'
-              displayName: Salute build task
+              displayName: Persons build task
               
             - task: DockerCompose@1
               inputs:
@@ -34,15 +28,15 @@ stages:
                 dockerComposeFile: 'docker/docker-compose.yml'
                 action: 'Push services'
                 includeLatestTag: true
-              displayName: Salute push task
+              displayName: Persons push task
              
                 
-    - stage: SaluteCD
-      displayName: Salute CD stage
-      dependsOn: SaluteCI
+    - stage: PersonsCD
+      displayName: Persons CD stage
+      dependsOn: PersonsCI
       jobs:
-        - job: SaluteDeploy
-          displayName: Salute Deploy job
+        - job: PersonsDeploy
+          displayName: Persons Deploy job
           steps:
             - task: AzureContainerApps@1
               displayName: Hello-service deploy task
@@ -51,7 +45,7 @@ stages:
                 acrName: 'bhcontainerregistry'
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/hello-service'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/hello-service'
                 containerAppName: 'hello-service'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
@@ -68,7 +62,7 @@ stages:
                 acrName: 'bhcontainerregistry'
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/world-service'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/world-service'
                 containerAppName: 'world-service'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
@@ -86,7 +80,7 @@ stages:
                 acrName: 'bhcontainerregistry'
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/greetings-service'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/greetings-service'
                 containerAppName: 'greetings-service'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
