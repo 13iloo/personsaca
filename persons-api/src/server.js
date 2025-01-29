@@ -66,7 +66,7 @@ await Storage.ConnectCreateAndSeed(app)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // All setup, listen, connect and then run main
 // Start to listen
-server.listen(process.env.PORT || '3000', () => {
+server.listen(process.env.PORT || '80', () => {
   console.log('Listening on %d.', server.address().port);
 });
 

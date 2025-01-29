@@ -30,7 +30,10 @@ services:
         db_host: persons-msdb # In docker the container name is also the host name
         db_password: Qaz@wsx!
     ports: 
-      - '3000:3000' 
+      - '80:80' 
+    environment:
+      - PORT=80
+
     # environment:
     #   - DB_HOST=persons-msdb
     #   - DB_PORT=1433
