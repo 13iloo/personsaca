@@ -8,7 +8,8 @@ ARG buildno
 ARG db_host
 ARG db_port
 ARG db_name
-# ARG db_username username is declared somewhere else
+#username is declared somewhere else
+ARG db_username 
 ARG db_password
 
 
@@ -17,6 +18,7 @@ ENV BUILD_INFO=$build_info
 ENV DB_HOST=$db_host
 ENV DB_PORT=$db_port
 ENV DB_NAME=$db_name
+ENV DB_USERNAME=$db_username
 ENV DB_PASSWORD=$db_password
 
 
