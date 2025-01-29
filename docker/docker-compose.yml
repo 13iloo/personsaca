@@ -33,7 +33,7 @@ services:
       - '80:80' 
     environment:
       - DB_HOST=persons-msdb
-            - DB_PORT=1433
+      - DB_PORT=1433
       - DB_USERNAME=iotuser
       - DB_PASSWORD=iotuser
       - DB_NAME=PersonsDB
