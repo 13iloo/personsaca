@@ -1,6 +1,7 @@
 services:
 # Order of things sometimes matters for Docker Compose
   persons-msdb:
+    container_name: persons-msdb
     image: dockerpersons/persons-msdb # it has to be the image name
     build: 
       context: ../persons-msdb
@@ -19,7 +20,8 @@ services:
       retries: 5
       start_period: 10s
 
-  persons-api:
+  persons-api:    
+    container_name: persons-api
     image: dockerpersons/persons-api 
     build: 
       context: ../persons-api 
