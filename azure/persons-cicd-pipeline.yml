@@ -60,7 +60,13 @@ stages:
                 location: 'northeurope'
                 ingress: 'internal'
                 disableTelemetry: true
-              
+            - task: AzureCLI@2
+              displayName: persons-msdb chande ingress to tcp/1433
+              inputs:
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                scriptType: 'pscore'
+                scriptLocation: 'inlineScript'
+                inlineScript: 'az containerapp ingress update --type internal --transport tcp --target-port 1433 --name persons-msdb --resource-group bhbigdata'
             - task: AzureContainerApps@1
               displayName: persons-api deploy task
               inputs:
