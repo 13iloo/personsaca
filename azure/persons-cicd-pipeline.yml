@@ -1,0 +1,103 @@
+# This is the name that will be visible in the runned Pipeline
+#name: '$(BuildDefinitionName)_Id$(Build.BuildId)_$(SourceBranchName)_$(Date:yyyyMMdd)'
+trigger:
+    none
+
+pr:
+    none
+
+pool:
+  # The agent should be ubuntu, 
+  vmImage: 'ubuntu-latest'
+
+stages:
+    - stage: SaluteCI
+      displayName: Salute CI Stage
+      jobs:
+        - job:
+          displayName: Salute build and push job
+          steps:
+            - task: DockerCompose@1
+              inputs:
+                containerregistrytype: 'Azure Container Registry'
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                azureContainerRegistry: '{"loginServer":"bhcontainerregistry.azurecr.io", "id" : "/subscriptions/6b707fea-0a44-4ee3-8c61-f2c29d7a2d25/resourceGroups/BHbigdata/providers/Microsoft.ContainerRegistry/registries/BHcontainerregistry"}'
+                dockerComposeFile: 'docker/docker-compose.yml'
+                action: 'Build services'
+              displayName: Salute build task
+              
+            - task: DockerCompose@1
+              inputs:
+                containerregistrytype: 'Azure Container Registry'
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                azureContainerRegistry: '{"loginServer":"bhcontainerregistry.azurecr.io", "id" : "/subscriptions/6b707fea-0a44-4ee3-8c61-f2c29d7a2d25/resourceGroups/BHbigdata/providers/Microsoft.ContainerRegistry/registries/BHcontainerregistry"}'
+                dockerComposeFile: 'docker/docker-compose.yml'
+                action: 'Push services'
+                includeLatestTag: true
+              displayName: Salute push task
+             
+                
+    - stage: SaluteCD
+      displayName: Salute CD stage
+      dependsOn: SaluteCI
+      jobs:
+        - job: SaluteDeploy
+          displayName: Salute Deploy job
+          steps:
+            - task: AzureContainerApps@1
+              displayName: Hello-service deploy task
+              inputs:
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                acrName: 'bhcontainerregistry'
+                acrUsername: 'bhcontainerregistry'
+                acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/hello-service'
+                containerAppName: 'hello-service'
+                resourceGroup: 'bhbigdata'
+                containerAppEnvironment: 'bigdata-env'
+                targetPort: '80'
+                location: 'northeurope'
+                environmentVariables: 'HELLO_SERVICE_PORT=80'
+                ingress: 'internal'
+                disableTelemetry: true
+              
+            - task: AzureContainerApps@1
+              displayName: World-service deploy task
+              inputs:
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                acrName: 'bhcontainerregistry'
+                acrUsername: 'bhcontainerregistry'
+                acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/world-service'
+                containerAppName: 'world-service'
+                resourceGroup: 'bhbigdata'
+                containerAppEnvironment: 'bigdata-env'
+                targetPort: '80'
+                location: 'northeurope'
+                environmentVariables: 'WORLD_SERVICE_PORT=80'
+                ingress: 'internal'
+                disableTelemetry: true
+              
+            
+            - task: AzureContainerApps@1
+              displayName: Greetings-service deploy task
+              inputs:
+                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                acrName: 'bhcontainerregistry'
+                acrUsername: 'bhcontainerregistry'
+                acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/salute/greetings-service'
+                containerAppName: 'greetings-service'
+                resourceGroup: 'bhbigdata'
+                containerAppEnvironment: 'bigdata-env'
+                targetPort: '80'
+                location: 'northeurope'
+                environmentVariables: 'PORT=80 HELLO_SERVICE_HOST_PREFIX=http://hello-service WORLD_SERVICE_HOST_PREFIX=http://world-service'
+                ingress: 'external'
+                disableTelemetry: true
+              
+            
+            
+          
+
+
