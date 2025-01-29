@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/mssql/server:2022-latest
 
 LABEL version '1.0.0'
 
-ARG sa_password
+ARG sa_password="Qaz!wsx2"
 ARG buildno
 
 ENV ACCEPT_EULA=Y
