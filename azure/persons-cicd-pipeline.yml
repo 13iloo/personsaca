@@ -53,7 +53,7 @@ stages:
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
                 imageToDeploy: 'bhcontainerregistry.azurecr.io/dockerpersons/persons-msdb'
-                containerAppName: 'persons-msd'
+                containerAppName: 'persons-msdb'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
                 targetPort: '1433'
