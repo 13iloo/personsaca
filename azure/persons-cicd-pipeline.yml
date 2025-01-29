@@ -46,59 +46,36 @@ stages:
           displayName: Persons Deploy job
           steps:
             - task: AzureContainerApps@1
-              displayName: Hello-service deploy task
+              displayName: persons-msdb deploy task
               inputs:
-                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
+                azureSubscription: 'Azure subscription Pay as you go(1)(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
                 acrName: 'bhcontainerregistry'
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/hello-service'
-                containerAppName: 'hello-service'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/dockerpersons/persons-msdb'
+                containerAppName: 'persons-msd'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
-                targetPort: '80'
+                targetPort: '1433'
                 location: 'northeurope'
-                environmentVariables: 'HELLO_SERVICE_PORT=80'
                 ingress: 'internal'
                 disableTelemetry: true
               
             - task: AzureContainerApps@1
-              displayName: World-service deploy task
+              displayName: persons-api deploy task
               inputs:
                 azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
                 acrName: 'bhcontainerregistry'
                 acrUsername: 'bhcontainerregistry'
                 acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/world-service'
-                containerAppName: 'world-service'
+                imageToDeploy: 'bhcontainerregistry.azurecr.io/dockerpersons/persons-api'
+                containerAppName: 'persons-api'
                 resourceGroup: 'bhbigdata'
                 containerAppEnvironment: 'bigdata-env'
                 targetPort: '80'
                 location: 'northeurope'
-                environmentVariables: 'WORLD_SERVICE_PORT=80'
-                ingress: 'internal'
-                disableTelemetry: true
-              
-            
-            - task: AzureContainerApps@1
-              displayName: Greetings-service deploy task
-              inputs:
-                azureSubscription: 'Azure subscription Pay as you go(6b707fea-0a44-4ee3-8c61-f2c29d7a2d25)'
-                acrName: 'bhcontainerregistry'
-                acrUsername: 'bhcontainerregistry'
-                acrPassword: 'bxys+3nkh/eC7ounXuUkoCMkYAFFZNSiOTTy5+quC0+ACRDEj4DS'
-                imageToDeploy: 'bhcontainerregistry.azurecr.io/Persons/greetings-service'
-                containerAppName: 'greetings-service'
-                resourceGroup: 'bhbigdata'
-                containerAppEnvironment: 'bigdata-env'
-                targetPort: '80'
-                location: 'northeurope'
-                environmentVariables: 'PORT=80 HELLO_SERVICE_HOST_PREFIX=http://hello-service WORLD_SERVICE_HOST_PREFIX=http://world-service'
                 ingress: 'external'
                 disableTelemetry: true
               
             
-            
-          
-
 
